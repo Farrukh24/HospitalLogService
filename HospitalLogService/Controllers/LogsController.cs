@@ -37,7 +37,7 @@ namespace HospitalLogService.Controllers
         {
             var newLog = await _repo.CreateAsync(log);
 
-            return CreatedAtAction(nameof(GetLogsAsync), new { id = newLog.Id });
+            return CreatedAtAction(nameof(GetLogsAsync), new { id = newLog.Id });       
         }
         
         [HttpPut("{id}")]
