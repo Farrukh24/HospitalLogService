@@ -1,4 +1,5 @@
 ﻿using HospitalLogService.Model;
+using HospitalLogService.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace HospitalLogService.Contracts
         Task<Log> CreateAsync(Log log);
         Task UpdateAsync(Log log);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Log>> SearchAsync(SearchRequest request);
 
     }
 }

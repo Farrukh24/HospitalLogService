@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalLogService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210910133335_AddDataToDB")]
-    partial class AddDataToDB
+    [Migration("20210910153814_AddData")]
+    partial class AddData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,23 @@ namespace HospitalLogService.Migrations
                         .IsUnique();
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Cardiology"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Therapist"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Neurologist"
+                        });
                 });
 
             modelBuilder.Entity("HospitalLogService.Model.Log", b =>
@@ -81,16 +98,13 @@ namespace HospitalLogService.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

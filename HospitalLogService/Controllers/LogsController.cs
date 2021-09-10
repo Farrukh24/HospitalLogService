@@ -1,5 +1,6 @@
 ﻿using HospitalLogService.Contracts;
 using HospitalLogService.Model;
+using HospitalLogService.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -49,5 +50,10 @@ namespace HospitalLogService.Controllers
            return await _repo.CreateAsync(log);                 
         }       
               
+        [HttpPost("Search")]
+        public async Task<IEnumerable<Log>> Search([FromBody]SearchRequest request)
+        {
+            return await _repo.SearchAsync(request);
+        }
     }
 }
