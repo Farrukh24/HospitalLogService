@@ -27,15 +27,33 @@ namespace HospitalLogService.Data
                entity.Property(e => e.Name).IsRequired().HasMaxLength(32);
                entity.HasIndex(e => e.Name).IsUnique();
 
-               //entity.HasMany(a => a.Logs).WithOne(b => b.Department);
+               entity.HasData(new Department
+               {
+                   Id = 1,
+                   Name = "Cardiology"
+                   
+               },
+               new Department
+               {
+                   Id = 2,
+                   Name = "Therapist"
+               },
+               new Department
+               {
+                   Id = 3,
+                   Name = "Neurologist"
+               }
+               );
+
            });
+
 
 
             //build visitor model
             modelBuilder.Entity<Visitor>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(32);
+                entity.Property(e => e.FullName).IsRequired().HasMaxLength(32);
 
                 //entity.HasMany(a => a.Logs).WithOne(b => b.Visitor);
 
