@@ -33,7 +33,9 @@ namespace HospitalLogService
         {
             services.AddScoped<ILogRepository, LogRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddControllers();
+            services.AddScoped<IVisitorRepository, VisitorRepository>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<ApplicationDbContext>(op => op.UseSqlServer(Configuration.GetConnectionString("connection")));
             services.AddSwaggerGen(c =>
             {

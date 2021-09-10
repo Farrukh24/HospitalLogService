@@ -34,12 +34,21 @@ namespace HospitalLogService.Repositories
 
         public async Task<IEnumerable<Log>> GetAllAsync()
         {
-            return await _db.Logs.ToListAsync();
+
+            return await _db.Logs
+                .AsNoTracking()
+                .AsQueryable()
+                .Include(i => i.Visitor)
+                .Include(i => i.Department)
+                .ToListAsync();
         }
 
         public async Task<Log> GetAsync(int id)
         {
-            return await _db.Logs.FindAsync(id);
+            return await _db.Logs
+               .Include(i => i.Department)
+               .Include(i => i.Visitor)
+               .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task UpdateAsync(Log log)

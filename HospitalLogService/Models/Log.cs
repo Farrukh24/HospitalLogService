@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,9 +21,8 @@ namespace HospitalLogService.Model
         public string Purpose { get; set; }
         public int DepartmentId { get; set; }
         public int VisitorId { get; set; }
-
         public Department Department { get; set; }
-        public  Visitor Visitor { get; set; }
+        public Visitor Visitor { get; set; }
 
     }
 }

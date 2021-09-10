@@ -11,11 +11,11 @@ namespace HospitalLogService.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class Departments : ControllerBase
+    public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentRepository _repo;
 
-        public Departments(IDepartmentRepository repo)
+        public DepartmentsController(IDepartmentRepository repo)
         {
             _repo = repo;
         }
@@ -29,15 +29,20 @@ namespace HospitalLogService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Department>> GetDepartmentAsync(int id)
         {
-            return await _repo.GetDepartmentAsync(id);
+            var department = await _repo.GetDepartmentAsync(id);
+            if(department != null)
+            {
+                return Ok(department);
+            }
+            return NotFound("Visit was not found!");
         }
 
         [HttpPost]
         public async Task<ActionResult<Department>> PostDepartmentAsync([FromBody] Department department)
         {
-            var newDepartment = await _repo.CreateDepartmentAsync(department);
-            //todo understand 
-            return CreatedAtAction(nameof(PostDepartmentAsync), new { id = newDepartment.Id });
+            department.Id = 0;             
+
+            return  await _repo.CreateDepartmentAsync(department);      
         }
 
         [HttpPut("{id}")]
@@ -48,10 +53,10 @@ namespace HospitalLogService.Controllers
                 return BadRequest("Not the same identifiers!");
             }
             await _repo.UpdateDepartmentAsync(department);
-            return NoContent();
+            return Ok("Successfully updated!");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Department>> DeleteDepartmentAsync(int id)
         {
             var deleteDepartment = await _repo.GetDepartmentAsync(id);
@@ -60,7 +65,7 @@ namespace HospitalLogService.Controllers
                 return NotFound();
             }
             await _repo.DeleteDepartmentAsync(deleteDepartment.Id);
-            return NoContent();
+            return Ok("Successfully deleted!");
         }
     }
 }

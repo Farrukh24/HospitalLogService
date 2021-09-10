@@ -10,8 +10,7 @@ namespace HospitalLogService.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
-        //TODO leanr what is dbset
+                
         public DbSet<Log> Logs { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Visitor> Visitors { get; set; }
@@ -27,6 +26,8 @@ namespace HospitalLogService.Data
                entity.HasKey(e => e.Id);
                entity.Property(e => e.Name).IsRequired().HasMaxLength(32);
                entity.HasIndex(e => e.Name).IsUnique();
+
+               //entity.HasMany(a => a.Logs).WithOne(b => b.Department);
            });
 
 
@@ -36,7 +37,7 @@ namespace HospitalLogService.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.FirstName).IsRequired().HasMaxLength(32);
 
-                // entity.HasOne(a => a.Type).WithMany(b => b.Visitor).HasForeignKey(a => a.LogFK).IsRequired();
+                //entity.HasMany(a => a.Logs).WithOne(b => b.Visitor);
 
 
             });
@@ -48,8 +49,9 @@ namespace HospitalLogService.Data
                 entity.Property(e => e.CreatedOn).IsRequired();
                 entity.Property(e => e.Purpose).IsRequired().HasMaxLength(128);
 
-                entity.HasOne(a => a.Visitor).WithMany(b => b.Logs).HasForeignKey(a => a.VisitorId);
-                entity.HasOne(a => a.Department).WithMany(b => b.Logs).HasForeignKey(a => a.DepartmentId);
+                entity.HasOne(a => a.Visitor).WithMany(b => b.Logs).HasForeignKey(c => c.VisitorId);
+                entity.HasOne(a => a.Department).WithMany(b => b.Logs).HasForeignKey(c => c.DepartmentId);
+
             });
         }
 

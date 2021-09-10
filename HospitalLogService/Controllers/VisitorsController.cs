@@ -11,11 +11,11 @@ namespace HospitalLogService.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class Visitors : ControllerBase
+    public class VisitorsController : ControllerBase
     {
         private readonly IVisitorRepository _repo;
 
-        public Visitors(IVisitorRepository repo)
+        public VisitorsController(IVisitorRepository repo)
         {
             _repo = repo;
         }
@@ -29,12 +29,20 @@ namespace HospitalLogService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Visitor>> GetVisitorAsync(int id)//from route or not?
         {
-            return await _repo.GetVisitorAsync(id);
+            var visitor = await _repo.GetVisitorAsync(id);
+            if(visitor != null)
+            {
+                return Ok(visitor);
+            }
+            return NotFound("Visit was not found!");
         }
 
         [HttpPost]
         public async Task<ActionResult<Visitor>> PostVisitorAsync([FromBody] Visitor visitor)
         {
+            visitor.Id = 0;
+            visitor.DateOfBirth = DateTime.Now;
+
             return await _repo.AddVisitorAsync(visitor);
         }
 
@@ -46,10 +54,10 @@ namespace HospitalLogService.Controllers
                 return BadRequest("Not the same Identifiers!");
             }
             await _repo.UpdateVisitorAsync(visitor);
-            return NoContent();
+            return Ok("Successfully updated!");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Visitor>> DeleteVisitorAsync(int id)//from route or not?
         {
             var deleteVisitor = await _repo.GetVisitorAsync(id);
@@ -59,7 +67,7 @@ namespace HospitalLogService.Controllers
             }
 
             await _repo.DeleteVisitorAsync(deleteVisitor.Id);
-            return NoContent();
+            return Ok("Successfully deleted!");
         }
     }
 }

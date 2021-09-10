@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalLogService.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210907164729_AddDataToDB")]
+    [Migration("20210910133335_AddDataToDB")]
     partial class AddDataToDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,9 +93,6 @@ namespace HospitalLogService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VisitorTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

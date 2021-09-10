@@ -29,40 +29,25 @@ namespace HospitalLogService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Log>> GetLogsAsync(int id)
         {
-            return await _repo.GetAsync(id);
+            var log = await _repo.GetAsync(id);
+            if (log != null)
+            {
+                return Ok(log);
+            }
+            return NotFound("Visit was not found!"); 
         }
 
         [HttpPost]
         public async Task<ActionResult<Log>> PostLogsAsync([FromBody] Log log)
         {
-            var newLog = await _repo.CreateAsync(log);
+            log.Id = 0;
+            log.CreatedOn = DateTime.Now;
 
-            return CreatedAtAction(nameof(GetLogsAsync), new { id = newLog.Id });       
-        }
-        
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Log>> PutLogsAsync([FromRoute]int id, [FromBody] Log log)
-        {
-            if (id != log.Id)
-            {
-                return BadRequest("Not the same identifiers!");
-            }
-            await _repo.UpdateAsync(log);
+            //todo validate visitorId
+            //todo validare departmentId
 
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Log>> DeleteLogsAsync(int id)
-        {
-            var deleteLog = await _repo.GetAsync(id);
-            if(deleteLog is null)
-            {
-                return NotFound();
-            }
-            await _repo.DeleteAsync(deleteLog.Id);
-
-            return NoContent();
-        }
+           return await _repo.CreateAsync(log);                 
+        }       
+              
     }
 }

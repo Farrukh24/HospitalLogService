@@ -93,9 +93,6 @@ namespace HospitalLogService.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<int>("VisitorTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Visitors");
