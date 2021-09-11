@@ -9,7 +9,7 @@ namespace HospitalLogService.Model
 {
     public class Department
     {      
-
+        [JsonIgnore]
         public int Id { get; set; }        
         public string Name { get; set; }        
         [JsonIgnore]

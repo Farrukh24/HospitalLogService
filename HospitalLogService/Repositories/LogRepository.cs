@@ -1,6 +1,7 @@
 ﻿using HospitalLogService.Contracts;
 using HospitalLogService.Data;
 using HospitalLogService.Model;
+using HospitalLogService.Repositories.Contracts;
 using HospitalLogService.Requests;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,10 +20,10 @@ namespace HospitalLogService.Repositories
         }
         public async Task<IEnumerable<Log>> SearchAsync(SearchRequest request)
         {
-           return await _db.Logs
-                .Include(a => a.Department)
-                .Include(a => a.Visitor)
-                .Where(i => i.CreatedOn > request.From && i.CreatedOn < request.To && i.Visitor.FullName.Contains(request.Username)).ToListAsync();
+            return await _db.Logs
+                 .Include(a => a.Department)
+                 .Include(a => a.Visitor)
+                 .Where(i => i.CreatedOn > request.From && i.CreatedOn < request.To && i.Visitor.FullName.Contains(request.Username)).ToListAsync();
         }
 
         public async Task<Log> CreateAsync(Log log)
